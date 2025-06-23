@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Personale Autore</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 0 25px rgba(0,0,0,0.1);
+        }
+        .welcome-message {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            border-left: 5px solid #4CAF50;
+            transition: transform 0.3s ease;
+        }
+        .welcome-message:hover {
+            transform: translateY(-5px);
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        h2 {
+            color: #2E7D32;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #f1f8e9;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .logout-button {
+            background-color: #f44336;
+        }
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+        .create-button {
+            background-color: #2196F3;
+            padding: 8px 16px;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .create-button:hover {
+            background-color: #0b7dda;
+        }
+        .actions-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+            outline: none;
+        }
+        .form-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2E7D32;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4CAF50;
+            font-weight: 500;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c62828;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 15px;
+                padding: 15px;
+            }
+            .button {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Area Personale Autore</h1>
+    </div>
+
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Benvenuto, {{ autore.nome }} {{ autore.cognome }}!</h2>
+            <p>Username: {{ autore.username }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Crea un Nuovo Libro</h2>
+            {% if success %}
+            <div class="success-message">
+                {{ success }}
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="form-container">
+                <form method="post" action="{% url 'create_libro' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="isbn">ISBN:</label>
+                        <input type="text" id="isbn" name="isbn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="titolo">Titolo:</label>
+                        <input type="text" id="titolo" name="titolo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editore">Editore:</label>
+                        <input type="text" id="editore" name="editore" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="anno_pubblicazione">Anno di Pubblicazione:</label>
+                        <input type="text" id="anno_pubblicazione" name="anno_pubblicazione" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edizione">Edizione:</label>
+                        <input type="text" id="edizione" name="edizione" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lingua">Lingua:</label>
+                        <input type="text" id="lingua" name="lingua" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="copertina_rigida">Copertina Rigida:</label>
+                        <select id="copertina_rigida" name="copertina_rigida" required>
+                            <option value="Si">Si</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materia">Materia (opzionale):</label>
+                        <input type="text" id="materia" name="materia">
+                    </div>
+                    <div class="form-group">
+                        <label for="classe_scolastica">Classe Scolastica (opzionale):</label>
+                        <input type="text" id="classe_scolastica" name="classe_scolastica">
+                    </div>
+                    <div class="form-group">
+                        <label for="data_pubblicazione">Data di Pubblicazione:</label>
+                        <input type="date" id="data_pubblicazione" name="data_pubblicazione" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="genere">Genere:</label>
+                        <select id="genere" name="genere" required>
+                            {% for genere in generi %}
+                                <option value="{{ genere.nome_genere }}">{{ genere.nome_genere }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantita_disponibili">Quantità Disponibili:</label>
+                        <input type="text" id="quantita_disponibili" name="quantita_disponibili" value="0" required>
+                    </div>
+                    <button type="submit" class="button create-button">Crea Libro</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>I Tuoi Libri</h2>
+            {% if libri %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Titolo</th>
+                            <th>Editore</th>
+                            <th>Anno</th>
+                            <th>Genere</th>
+                            <th>Quantità Disponibile</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libri %}
+                            <tr>
+                                <td>{{ libro.ISBN }}</td>
+                                <td>{{ libro.titolo }}</td>
+                                <td>{{ libro.editore }}</td>
+                                <td>{{ libro.anno_pubblicazione }}</td>
+                                <td>{{ libro.genere.nome_genere }}</td>
+                                <td>{{ libro.quantita_disponibili }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Non hai ancora creato nessun libro.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Azioni</h2>
+            <div class="actions-container">
+                <a href="{% url 'logout' %}" class="button logout-button">Logout</a>
+                <a href="{% url 'benvenuto' %}" class="button">Torna alla Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

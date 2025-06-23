@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benvenuto</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .menu-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-button:hover {
+            background-color: #45a049;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: #4CAF50;
+        }
+
+        .footer {
+            margin-top: 100px;
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .menu-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .dropdown {
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .dropdown-button {
+                width: 100%;
+            }
+
+            .dropdown-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sistema di Donazioni Libri</h1>
+        <div class="subtitle">Condividi la conoscenza, dona un libro</div>
+    </div>
+
+    <div class="container">
+        <div class="menu-container">
+            <div class="dropdown">
+                <button class="dropdown-button">Registrazione</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'registrazione_acquirente' %}">Registrazione Acquirente</a>
+                    <a href="{% url 'registrazione_donatore' %}">Registrazione Donatore</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-button">Login</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'login_acquirente' %}">Login Acquirente</a>
+                    <a href="{% url 'login_donatore' %}">Login Donatore</a>
+                    <a href="{% url 'login_amministratore' %}">Login Amministratore</a>
+                    <a href="{% url 'login_autore' %}">Login Autore</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Sistema di Donazioni Libri - Tutti i diritti riservati
+        </div>
+    </div>
+</body>
+</html>

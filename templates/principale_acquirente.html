@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Personale Acquirente</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            box-shadow: 0 0 25px rgba(0,0,0,0.1);
+        }
+        .welcome-message {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            border-left: 5px solid #4CAF50;
+            transition: transform 0.3s ease;
+        }
+        .welcome-message:hover {
+            transform: translateY(-5px);
+        }
+        .section {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        h2 {
+            color: #2E7D32;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #f1f8e9;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .logout-button {
+            background-color: #f44336;
+        }
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+        .buy-button {
+            background-color: #2196F3;
+            padding: 8px 16px;
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .buy-button:hover {
+            background-color: #0b7dda;
+        }
+        .actions-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .container {
+                margin: 15px;
+                padding: 15px;
+            }
+            .button {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Area Personale Acquirente</h1>
+    </div>
+
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Benvenuto, {{ acquirente.nome }} {{ acquirente.cognome }}!</h2>
+            <p>Username: {{ acquirente.username }}</p>
+            <p>Email: {{ acquirente.email }}</p>
+        </div>
+
+        <div class="section">
+            <h2>Libri Disponibili</h2>
+            {% if libri %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Titolo</th>
+                            <th>Autore</th>
+                            <th>Editore</th>
+                            <th>Anno</th>
+                            <th>Genere</th>
+                            <th>Quantità Disponibile</th>
+                            <th>Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libri %}
+                            <tr>
+                                <td>{{ libro.ISBN }}</td>
+                                <td>{{ libro.titolo }}</td>
+                                <td>{{ libro.autore.nome }} {{ libro.autore.cognome }}</td>
+                                <td>{{ libro.editore }}</td>
+                                <td>{{ libro.anno_pubblicazione }}</td>
+                                <td>{{ libro.genere.nome_genere }}</td>
+                                <td>{{ libro.quantita_disponibili }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'acquista_libro' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="libro_id" value="{{ libro.ISBN }}">
+                                        <button type="submit" class="button buy-button">Acquista</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Non ci sono libri disponibili al momento.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Azioni</h2>
+            <div class="actions-container">
+                <a href="{% url 'libri_acquistati' %}" class="button">I Miei Libri Acquistati</a>
+                <a href="{% url 'logout' %}" class="button logout-button">Logout</a>
+                <a href="{% url 'benvenuto' %}" class="button">Torna alla Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
