@@ -49,6 +49,7 @@ py manage.py runserver
 ```
 
 Utenti di prova già registrati:
+
 Donatore:
 ```
 username: jeff_bezos
